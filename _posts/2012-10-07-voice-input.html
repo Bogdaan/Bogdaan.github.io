@@ -1,0 +1,73 @@
+---
+layout: post
+status: publish
+published: true
+title: Распознование голоса для html форм
+
+date: '2012-10-07 16:59:00 +0300'
+
+categories:
+- frontend
+tags:
+- html5
+- speech
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div style="text-align: left;">
+Появилась идея - добавить возможность диктовки с микрофона текстовых данных. Вспомнив о спецификациях HTML5 -- сразу нашел атрибут <i>speech</i> тега <i>input</i>. В данный момент эта возможность поддерживаеться только Google Chrome, и то с префиксом - <i>x-webkit-speech</i>.</div>
+<p>
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div style="text-align: left;">
+В итоге должен получиться примерно такой input:</p>
+<pre class="prettyprint">&lt;input name="voice-input"
+placeholder="диктуйте" size="50" speech="speech"
+type="text" x-webkit-speech="x-webkit-speech" /&gt;
+</pre>
+<p>
+Для <i>textarea</i> подобного атрибута нет, но на данный момент можно обойти с помощью js:</p>
+<pre class="prettyprint">&lt;html&gt;
+&lt;head&gt;
+&lt;script type="text/javascript"&gt;
+voiceInput = function( val, ids ){
+ document.getElementById(ids).value = val;
+ document.getElementById("mic-"+ids).value = "";
+ document.getElementById(ids).focus();
+}
+&lt;/script&gt;
+&lt;head&gt;
+&lt;body&gt;
+&lt;form action="http://randomuri.blogspot.com"&gt;
+&lt;textarea id="voicet" name="voicet"&gt;&lt;/textarea&gt;
+&lt;input class="microphone-input" id="mic-voicet"
+onwebkitspeechchange="document.voiceInput(this.value, 'voicet')"
+x-webkit-speech="x-webkit-speech" /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/head&gt;&lt;/head&gt;&lt;/html&gt;
+</pre>
+<p><br/><br />
+Пример формы:</p>
+<p>voiceInput = function( val, ids ){<br />
+ document.getElementById(ids).value = val;<br />
+ document.getElementById("mic-"+ids).value = "";<br />
+ document.getElementById(ids).focus();<br />
+}</p>
+<table>
+<tr>
+<td>
+Сообщение
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+Нажмите чтобы продиктовать:
+</td>
+<td>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>

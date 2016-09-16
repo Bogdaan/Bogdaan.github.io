@@ -1,0 +1,224 @@
+---
+layout: post
+status: publish
+published: true
+title: git flow работаем по чистому
+
+date: '2015-03-10 22:00:00 +0200'
+
+categories:
+- utils
+tags:
+- git
+---
+<p>Если вы все еще создаете ветки вручную (git branch new-feature), либо не используете их вообще (что еще печальней :)), советую присмотреться к небольшой надстройке над git - <a href="https://github.com/nvie/gitflow">git-flow</a>. Данный инструмент значительно упростит и сделает понятной работу для всех участников репозитория, даже если вы работаете над проектом в одиночку, он позволит вести вполне стандартную модель веток (master + develop) и поддерживать семантического версионирование релизов.Что же делает git-flow? Основная задача, это сопровождение трех типа веток проекта. А именно:</p>
+<ol>
+    <li><b>master</b> - главная ветвь для релизов</li>
+    <li><b>develop</b> или dev - главная ветвь разработки</li>
+    <li><b>feature/*</b> - ветви с новыми функциями, которые потенциально будут слиты в dev</li>
+    <li><b>hotfix/*</b> - ветви хотфиксов master</li>
+    <li><b>support/*</b> - ветки поддержки</li>
+</ol>
+<div>По сути git-flow представляет из себя cli надстройку над git которая создает, сливает, пушит и теггирует ветви просто предоставив одну команду вместо нескольких git команд.</div>
+<div>Установим данный инструмент, и рассмотрим простой пример его использования.</div>
+
+<div>Для пользователей ubuntu:</div>
+<div></div>
+{% highlight bash %} apt-get install git-flow{% endhighlight %}
+<div>Для mac-ов:</div>
+{% highlight bash %} port install git-flow{% endhighlight %}
+<div>Для пользователей Windows (через cygwin):</div>
+{% highlight bash %} wget -q -O - --no-check-certificate https://github.com/nvie/gitflow/raw/develop/contrib/gitflow-installer.sh | bash{% endhighlight %}
+<div>Если установка прошла успешно, попробуйте ввести "git flow", ниже должно вывестись список доступных команд:</div>
+{% highlight bash %}$ git flow
+usage: git flow &lt;subcommand&gt;
+
+Available subcommands are:
+   init      Initialize a new git repo with support for the branching model.
+   feature   Manage your feature branches.
+   release   Manage your release branches.
+   hotfix    Manage your hotfix branches.
+   support   Manage your support branches.
+   version   Shows version information.
+   config    Manage your git-flow configuration.
+
+Try 'git flow &lt;subcommand&gt; help' for details.{% endhighlight %}
+<div>
+<div>Создадим тестовый репозиторий, и попробуем использовать некоторые преимущества git flow.</div>
+{% highlight bash %}$ mkdir testrepo
+$ cd testrepo/
+testrepo$ git init
+{% endhighlight %}
+<div>На данном этапе нам нужно инициировать конфигурацию git-flow. Процесс инициализации позволяет задать свои имена для веток  назначения, но в нашем случае мы будем использовать стандартные имена (master, develop итд.). Запускаем и вводим везде enter:</div>
+{% highlight bash %}$ git flow init
+No branches exist yet. Base branches must be created now.
+Branch name for production releases: [master]
+Branch name for "next release" development: [develop]
+
+How to name your supporting branch prefixes?
+Feature branches? [feature/]
+Release branches? [release/]
+Hotfix branches? [hotfix/]
+Support branches? [support/]
+Version tag prefix? []
+{% endhighlight %}
+<div>Допустим сейчас нам нужно сделать "фичу X" - создадим для этого отдельную ветку командой "git flow feature start X":</div>
+<div></div>
+{% highlight bash %}$ git flow feature start X
+Перешел к новой ветке 'feature/X'
+
+Summary of actions:
+- A new branch 'feature/X' was created, based on 'develop'
+- You are now on branch 'feature/X'
+
+Now, start committing on your feature. When done, use:
+
+     git flow feature finish X
+{% endhighlight %}
+<p>В итоге у нас появиться ветка "feature/X". Попробуем внести изменения и зафиксировать их.</p>
+{% highlight bash %}testrepo$ touch x.txt
+testrepo$ git add x.txt
+testrepo$ git commit -m 'add x'
+[feature/X e1fc159] add x
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 x.txt{% endhighlight %}
+</div>
+<p>Но допустим сейчас появился баг в master ветке, который нужно срочно попроавить. Создадим хотфикс с помощью "git flow hotfix start fixbug":</p>
+{% highlight bash %}testrepo$ git flow hotfix start fixbug
+Перешел к новой ветке 'hotfix/fixbug'
+
+Summary of actions:
+- A new branch 'hotfix/fixbug' was created, based on 'master'
+- You are now on branch 'hotfix/fixbug'
+
+Follow-up actions:
+- Bump the version number now!
+- Start committing your hot fixes
+- When done, run:
+
+     git flow hotfix finish 'fixbug'{% endhighlight %}
+<p>Таким образом мы создали ветвь "hotfix/fixbug" и перешли на нее:</p>
+{% highlight bash %} testrepo$ git branch
+  develop
+  feature/X
+* hotfix/fixbug
+  master{% endhighlight %}
+<div>
+<p>Поправим условный баг, и зафиксируем изменения:</p>
+{% highlight bash %}testrepo$ touch fixbug.txt
+testrepo$ git add fixbug.txt
+testrepo$ git commit -m 'fix bug'
+[hotfix/fixbug b6e5ec8] fix bug
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 fixbug.txt
+{% endhighlight %}
+<p>Далее нам необходимо применить хотфикс (слияние или rebase) к master и develop, чтобы структура проекта осталась целостной. Используем для этого "git flow hotfix finish fixbug":</p>
+{% highlight bash %}testrepo$ git flow hotfix finish fixbug
+Перешел к ветке 'master'
+Merge made by the 'recursive' strategy.
+ fixbug.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 fixbug.txt
+Перешел к ветке 'develop'
+Merge made by the 'recursive' strategy.
+ fixbug.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 fixbug.txt
+Удалена ветка hotfix/fixbug (была b6e5ec8).
+
+Summary of actions:
+- Hotfix branch 'hotfix/fixbug' has been merged into 'master'
+- The hotfix was tagged 'fixbug'
+- Hotfix tag 'fixbug' has been back-merged into 'develop'
+- Hotfix branch 'hotfix/fixbug' has been locally deleted
+- You are now on branch 'develop'{% endhighlight %}
+</div>
+<div>
+<p>Что мы получили в итоге (дословно написано выше):</p>
+<ul>
+<li>ветка hotfix/fixbug слита в master</li>
+<li>хотфиксу назначен тег fixbug</li>
+<li>hotfix/fixbug слит в develop</li>
+<li>ветка hotfix/fixbug удалена (локально)</li>
+<li>репозиторий переключен на develop</li>
+</ul>
+<p>Ну разве это не прекрасно :)? Далее, попробуем теперь завершить нашу "фичу X" с помощью "git flow feature finish X":</p>
+{% highlight bash %}testrepo$ git flow feature finish X
+Уже в 'develop'
+Merge made by the 'recursive' strategy.
+ x.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 x.txt
+Удалена ветка feature/X (была e1fc159).
+
+Summary of actions:
+- The feature branch 'feature/X' was merged into 'develop'
+- Feature branch 'feature/X' has been locally deleted
+- You are now on branch 'develop'{% endhighlight %}
+<p>Что мы получили:</p>
+<ul>
+<li>ветка feature/X слита в develop</li>
+<li>ветка feature/X удалена (локально)</li>
+<li>репозиторий переключен на develop</li>
+</ul>
+<div>Похожим образом можно создавать релизы и версионировать их, сделаем релиз 0.0.1. Для этого выполним такую последовательность:</div>
+<div>
+<ol>
+<li>запустим git flow release start 0.0.1</li>
+<li>добавим файл с информацией о релизе и зафиксируем изменения</li>
+<li>запустим git flow release finish 0.0.1</li>
+</ol>
+</div>
+{% highlight bash %}$ git flow release start 0.0.1
+Перешел к новой ветке 'release/0.0.1'
+
+Summary of actions:
+- A new branch 'release/0.0.1' was created, based on 'develop'
+- You are now on branch 'release/0.0.1'
+
+Follow-up actions:
+- Bump the version number now!
+- Start committing last-minute fixes in preparing your release
+- When done, run:
+
+     git flow release finish '0.0.1'
+
+testrepo$ echo 'changes' &gt; release-0.0.1.txt
+testrepo$ git add release-0.0.1.txt
+testrepo$ git commit -m 'changes'
+[release/0.0.1 ae2ae9f] changes
+ 1 file changed, 1 insertion(+)
+ create mode 100644 release-0.0.1.txt
+testrepo$ git flow release finish 0.0.1
+Перешел к ветке 'master'
+Merge made by the 'recursive' strategy.
+ release-0.0.1.txt | 1 +
+ x.txt             | 0
+ 2 files changed, 1 insertion(+)
+ create mode 100644 release-0.0.1.txt
+ create mode 100644 x.txt
+Перешел к ветке 'develop'
+Merge made by the 'recursive' strategy.
+ release-0.0.1.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 release-0.0.1.txt
+Удалена ветка release/0.0.1 (была ae2ae9f).
+
+Summary of actions:
+- Release branch 'release/0.0.1' has been merged into 'master'
+- The release was tagged '0.0.1'
+- Release tag '0.0.1' has been back-merged into 'develop'
+- Release branch 'release/0.0.1' has been locally deleted
+- You are now on branch 'develop'{% endhighlight %}
+<p>Получили:</p>
+<ol>
+<li>создалась ветка release/0.0.1</li>
+<li>мы внесли в нее файл информации релиза (release-0.0.1.txt)</li>
+<li>ветка релиза слита в мастер</li>
+<li>создан тег 0.0.1</li>
+<li>ветка релиза слита в develop</li>
+<li>ветка релиза удалена (локально)</li>
+<li>репозиторий переведен на develop</li>
+</ol>
+<p>Мой вывод: git-flow - отличный инструмент, который позволяет вести чистую модель ветвления в проекте, и упростить работу.</p>
+</div>

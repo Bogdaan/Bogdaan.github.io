@@ -1,0 +1,34 @@
+---
+layout: post
+status: publish
+published: true
+title: Скрипт сбора почты по  pop3
+
+date: '2013-09-03 10:36:00 +0300'
+
+categories:
+- utils
+tags:
+- python3
+---
+<p>Самый простой скрипт сбора почты по POP3: </p>
+{% highlight Python %}
+#!/usr/bin/env python3
+
+import poplib
+
+def prompt(prompt):
+    return input(prompt).strip()
+
+server   = prompt("POP3 server: ")
+user     = prompt("POP3 user: ")
+password = prompt("POP3 pass: ")
+
+pp = poplib.POP3(server)
+pp.user(user)
+pp.pass_(password)
+numMessages = len(pp.list()[1])
+for i in range(numMessages):
+    for j in pp.retr(i+1)[1]:
+        print(j)
+{% endhighlight %}

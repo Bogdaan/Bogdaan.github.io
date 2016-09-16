@@ -1,0 +1,218 @@
+---
+layout: post
+status: publish
+published: true
+title: База данных моделей мотоциклов
+
+date: '2014-03-12 11:41:00 +0200'
+
+categories:
+- db
+tags:
+- база данных
+---
+
+<p>Собрал тут небольшую базу данных моделей мотоциклов и их характеристик.</p>
+<p>
+    Возможно кому-то пригодиться: <a href="https://bitbucket.org/onel/motodb">https://bitbucket.org/onel/motodb </a><br />
+    Формат данных - bson.
+</p>
+<p>&nbsp;Коллекция содержит&nbsp; поля:<br />
+&nbsp; </p>
+<div class="codehilite">
+{% highlight json %}
+{ "_id" : { "key" : "_id" }, "value" : { "type" : "ObjectId" }, "totalOccurrences" : 19922, "percentContaining" : 100 }
+{ "_id" : { "key" : "spesification" }, "value" : { "type" : "String" }, "totalOccurrences" : 19922, "percentContaining" : 100 }
+{ "_id" : { "key" : "url" }, "value" : { "type" : "String" }, "totalOccurrences" : 19922, "percentContaining" : 100 }
+{ "_id" : { "key" : "year" }, "value" : { "type" : "String" }, "totalOccurrences" : 19920, "percentContaining" : 99.98996084730449 }
+{ "_id" : { "key" : "category" }, "value" : { "type" : "String" }, "totalOccurrences" : 19920, "percentContaining" : 99.98996084730449 }
+{ "_id" : { "key" : "model" }, "value" : { "type" : "String" }, "totalOccurrences" : 19919, "percentContaining" : 99.98494127095672 }
+{ "_id" : { "key" : "engine_type" }, "value" : { "type" : "String" }, "totalOccurrences" : 19909, "percentContaining" : 99.93474550747918 }
+{ "_id" : { "key" : "displacement" }, "value" : { "type" : "String" }, "totalOccurrences" : 19674, "percentContaining" : 98.75514506575645 }
+{ "_id" : { "key" : "front_brakes" }, "value" : { "type" : "String" }, "totalOccurrences" : 19077, "percentContaining" : 95.75845798614597 }
+{ "_id" : { "key" : "rear_brakes" }, "value" : { "type" : "String" }, "totalOccurrences" : 18878, "percentContaining" : 94.75956229294248 }
+{ "_id" : { "key" : "gearbox" }, "value" : { "type" : "String" }, "totalOccurrences" : 17540, "percentContaining" : 88.04336913964461 }
+{ "_id" : { "key" : "cooling_system" }, "value" : { "type" : "String" }, "totalOccurrences" : 17434, "percentContaining" : 87.51129404678245 }
+{ "_id" : { "key" : "fuel_capacity" }, "value" : { "type" : "String" }, "totalOccurrences" : 16480, "percentContaining" : 82.72261821102299 }
+{ "_id" : { "key" : "front_tyre_dimensions" }, "value" : { "type" : "String" }, "totalOccurrences" : 15819, "percentContaining" : 79.4046782451561 }
+{ "_id" : { "key" : "rear_tyre_dimensions" }, "value" : { "type" : "String" }, "totalOccurrences" : 15802, "percentContaining" : 79.31934544724425 }
+{ "_id" : { "key" : "bore_x_stroke" }, "value" : { "type" : "String" }, "totalOccurrences" : 14314, "percentContaining" : 71.85021584178295 }
+{ "_id" : { "key" : "power" }, "value" : { "type" : "String" }, "totalOccurrences" : 13064, "percentContaining" : 65.57574540708764 }
+{ "_id" : { "key" : "dry_weight" }, "value" : { "type" : "String" }, "totalOccurrences" : 12734, "percentContaining" : 63.91928521232808 }
+{ "_id" : { "key" : "seat_height" }, "value" : { "type" : "String" }, "totalOccurrences" : 12275, "percentContaining" : 61.615299668707955 }
+{ "_id" : { "key" : "wheelbase" }, "value" : { "type" : "String" }, "totalOccurrences" : 12227, "percentContaining" : 61.37436000401566 }
+{ "_id" : { "key" : "fuel_system" }, "value" : { "type" : "String" }, "totalOccurrences" : 12164, "percentContaining" : 61.05812669410702 }
+{ "_id" : { "key" : "compression" }, "value" : { "type" : "String" }, "totalOccurrences" : 12060, "percentContaining" : 60.536090753940364 }
+{ "_id" : { "key" : "starter" }, "value" : { "type" : "String" }, "totalOccurrences" : 11741, "percentContaining" : 58.93484589900613 }
+{ "_id" : { "key" : "stroke" }, "value" : { "type" : "String" }, "totalOccurrences" : 11119, "percentContaining" : 55.81266941070173 }
+{ "_id" : { "key" : "front_suspension" }, "value" : { "type" : "String" }, "totalOccurrences" : 10712, "percentContaining" : 53.76970183716494 }
+{ "_id" : { "key" : "fuel_control" }, "value" : { "type" : "String" }, "totalOccurrences" : 10522, "percentContaining" : 52.81598233109126 }
+{ "_id" : { "key" : "rear_suspension" }, "value" : { "type" : "String" }, "totalOccurrences" : 10520, "percentContaining" : 52.805943178395744 }
+{ "_id" : { "key" : "color_options" }, "value" : { "type" : "String" }, "totalOccurrences" : 10213, "percentContaining" : 51.26493323963458 }
+{ "_id" : { "key" : "overall_length" }, "value" : { "type" : "String" }, "totalOccurrences" : 10030, "percentContaining" : 50.34635076799518 }
+{ "_id" : { "key" : "front_brakes_diameter" }, "value" : { "type" : "String" }, "totalOccurrences" : 8895, "percentContaining" : 44.649131613291836 }
+{ "_id" : { "key" : "valves_per_cylinder" }, "value" : { "type" : "String" }, "totalOccurrences" : 8850, "percentContaining" : 44.423250677642805 }
+{ "_id" : { "key" : "rear_brakes_diameter" }, "value" : { "type" : "String" }, "totalOccurrences" : 8619, "percentContaining" : 43.26372854131112 }
+{ "_id" : { "key" : "transmission_typefinal_drive" }, "value" : { "type" : "String" }, "totalOccurrences" : 8556, "percentContaining" : 42.94749523140247 }
+{ "_id" : { "key" : "torque" }, "value" : { "type" : "String" }, "totalOccurrences" : 8276, "percentContaining" : 41.54201385403072 }
+{ "_id" : { "key" : "power_weight_ratio" }, "value" : { "type" : "String" }, "totalOccurrences" : 8090, "percentContaining" : 40.608372653348056 }
+{ "_id" : { "key" : "overall_width" }, "value" : { "type" : "String" }, "totalOccurrences" : 7926, "percentContaining" : 39.78516213231603 }
+{ "_id" : { "key" : "transmission_type_final_drive" }, "value" : { "type" : "String" }, "totalOccurrences" : 7369, "percentContaining" : 36.9892581066158 }
+{ "_id" : { "key" : "ignition" }, "value" : { "type" : "String" }, "totalOccurrences" : 7238, "percentContaining" : 36.33169360505973 }
+{ "_id" : { "key" : "overall_height" }, "value" : { "type" : "String" }, "totalOccurrences" : 6857, "percentContaining" : 34.419235016564606 }
+{ "_id" : { "key" : "frame_type" }, "value" : { "type" : "String" }, "totalOccurrences" : 6795, "percentContaining" : 34.108021283003715 }
+{ "_id" : { "key" : "weight_incl_oil_gas_etc" }, "value" : { "type" : "String" }, "totalOccurrences" : 6638, "percentContaining" : 33.319947796405984 }
+{ "_id" : { "key" : "top_speed" }, "value" : { "type" : "String" }, "totalOccurrences" : 6423, "percentContaining" : 32.24073888163839 }
+{ "_id" : { "key" : "clutch" }, "value" : { "type" : "String" }, "totalOccurrences" : 6262, "percentContaining" : 31.432587089649633 }
+{ "_id" : { "key" : "ground_clearance" }, "value" : { "type" : "String" }, "totalOccurrences" : 6153, "percentContaining" : 30.8854532677442 }
+{ "_id" : { "key" : "front_suspension_travel" }, "value" : { "type" : "String" }, "totalOccurrences" : 5050, "percentContaining" : 25.34886055616906 }
+{ "_id" : { "key" : "rear_suspension_travel" }, "value" : { "type" : "String" }, "totalOccurrences" : 4894, "percentContaining" : 24.565806645919082 }
+{ "_id" : { "key" : "lubrication_system" }, "value" : { "type" : "String" }, "totalOccurrences" : 4466, "percentContaining" : 22.41742796907941 }
+{ "_id" : { "key" : "rake_fork_angle" }, "value" : { "type" : "String" }, "totalOccurrences" : 3932, "percentContaining" : 19.73697419937757 }
+{ "_id" : { "key" : "exhaust_system" }, "value" : { "type" : "String" }, "totalOccurrences" : 2998, "percentContaining" : 15.048689890573236 }
+{ "_id" : { "key" : "Model_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2864, "percentContaining" : 14.3760666599739 }
+{ "_id" : { "key" : "Year_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2864, "percentContaining" : 14.3760666599739 }
+{ "_id" : { "key" : "Category_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2864, "percentContaining" : 14.3760666599739 }
+{ "_id" : { "key" : "Engine_type_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2863, "percentContaining" : 14.371047083626143 }
+{ "_id" : { "key" : "Displacement_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2819, "percentContaining" : 14.150185724324867 }
+{ "_id" : { "key" : "Front_brakes_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2739, "percentContaining" : 13.748619616504367 }
+{ "_id" : { "key" : "trail" }, "value" : { "type" : "String" }, "totalOccurrences" : 2724, "percentContaining" : 13.673325971288023 }
+{ "_id" : { "key" : "Rear_brakes_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2710, "percentContaining" : 13.603051902419436 }
+{ "_id" : { "key" : "Cooling_system_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2519, "percentContaining" : 12.64431281999799 }
+{ "_id" : { "key" : "Gearbox_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2500, "percentContaining" : 12.548940869390623 }
+{ "_id" : { "key" : "Fuel_capacity_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2322, "percentContaining" : 11.65545627949001 }
+{ "_id" : { "key" : "Front_tyre_dimensions_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2249, "percentContaining" : 11.289027206103805 }
+{ "_id" : { "key" : "Rear_tyre_dimensions_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2239, "percentContaining" : 11.238831442626243 }
+{ "_id" : { "key" : "driveline" }, "value" : { "type" : "String" }, "totalOccurrences" : 2118, "percentContaining" : 10.631462704547737 }
+{ "_id" : { "key" : "Bore_x_stroke_" }, "value" : { "type" : "String" }, "totalOccurrences" : 2023, "percentContaining" : 10.154602951510892 }
+{ "_id" : { "key" : "reserve_fuel_capacity" }, "value" : { "type" : "String" }, "totalOccurrences" : 1965, "percentContaining" : 9.86346752334103 }
+{ "_id" : { "key" : "Dry_weight_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1901, "percentContaining" : 9.54221463708463 }
+{ "_id" : { "key" : "Power_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1888, "percentContaining" : 9.4769601445638 }
+{ "_id" : { "key" : "Seat_height_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1762, "percentContaining" : 8.844493524746513 }
+{ "_id" : { "key" : "Wheelbase_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1750, "percentContaining" : 8.784258608573436 }
+{ "_id" : { "key" : "Fuel_system_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1742, "percentContaining" : 8.744101997791386 }
+{ "_id" : { "key" : "Starter_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1726, "percentContaining" : 8.663788776227287 }
+{ "_id" : { "key" : "Compression_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1703, "percentContaining" : 8.548338520228892 }
+{ "_id" : { "key" : "wheels" }, "value" : { "type" : "String" }, "totalOccurrences" : 1668, "percentContaining" : 8.372653348057424 }
+{ "_id" : { "key" : "Stroke_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1605, "percentContaining" : 8.05642003814878 }
+{ "_id" : { "key" : "engine_details" }, "value" : { "type" : "String" }, "totalOccurrences" : 1535, "percentContaining" : 7.705049693805844 }
+{ "_id" : { "key" : "Front_suspension_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1530, "percentContaining" : 7.679951812067061 }
+{ "_id" : { "key" : "Rear_suspension_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1514, "percentContaining" : 7.599638590502962 }
+{ "_id" : { "key" : "Color_options_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1493, "percentContaining" : 7.494227487200081 }
+{ "_id" : { "key" : "Fuel_control_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1478, "percentContaining" : 7.418933841983737 }
+{ "_id" : { "key" : "Overall_length_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1464, "percentContaining" : 7.348659773115148 }
+{ "_id" : { "key" : "Front_brakes_diameter_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1257, "percentContaining" : 6.309607469129605 }
+{ "_id" : { "key" : "Torque_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1248, "percentContaining" : 6.2644312819998 }
+{ "_id" : { "key" : "Rear_brakes_diameter_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1221, "percentContaining" : 6.12890272061038 }
+{ "_id" : { "key" : "Transmission_typefinal_drive_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1211, "percentContaining" : 6.078706957132818 }
+{ "_id" : { "key" : "Valves_per_cylinder_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1211, "percentContaining" : 6.078706957132818 }
+{ "_id" : { "key" : "Power_weight_ratio_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1210, "percentContaining" : 6.073687380785062 }
+{ "_id" : { "key" : "oil_capacity" }, "value" : { "type" : "String" }, "totalOccurrences" : 1205, "percentContaining" : 6.0485894990462805 }
+{ "_id" : { "key" : "Overall_width_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1150, "percentContaining" : 5.772512799919687 }
+{ "_id" : { "key" : "factory_warranty" }, "value" : { "type" : "String" }, "totalOccurrences" : 1142, "percentContaining" : 5.732356189137637 }
+{ "_id" : { "key" : "fuel_consumption" }, "value" : { "type" : "String" }, "totalOccurrences" : 1139, "percentContaining" : 5.717297460094368 }
+{ "_id" : { "key" : "greenhouse_gases" }, "value" : { "type" : "String" }, "totalOccurrences" : 1139, "percentContaining" : 5.717297460094368 }
+{ "_id" : { "key" : "Transmission_type_final_drive_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1043, "percentContaining" : 5.235418130709768 }
+{ "_id" : { "key" : "Ignition_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1004, "percentContaining" : 5.039654653147274 }
+{ "_id" : { "key" : "Overall_height_" }, "value" : { "type" : "String" }, "totalOccurrences" : 994, "percentContaining" : 4.989458889669711 }
+{ "_id" : { "key" : "emission_details" }, "value" : { "type" : "String" }, "totalOccurrences" : 979, "percentContaining" : 4.914165244453368 }
+{ "_id" : { "key" : "Frame_type_" }, "value" : { "type" : "String" }, "totalOccurrences" : 976, "percentContaining" : 4.899106515410099 }
+{ "_id" : { "key" : "electrical" }, "value" : { "type" : "String" }, "totalOccurrences" : 943, "percentContaining" : 4.7334604959341435 }
+{ "_id" : { "key" : "Clutch_" }, "value" : { "type" : "String" }, "totalOccurrences" : 940, "percentContaining" : 4.718401766890874 }
+{ "_id" : { "key" : "Top_speed_" }, "value" : { "type" : "String" }, "totalOccurrences" : 907, "percentContaining" : 4.552755747414918 }
+{ "_id" : { "key" : "Ground_clearance_" }, "value" : { "type" : "String" }, "totalOccurrences" : 883, "percentContaining" : 4.432285915068769 }
+{ "_id" : { "key" : "Weight_incl_oil_gas_etc_" }, "value" : { "type" : "String" }, "totalOccurrences" : 877, "percentContaining" : 4.40216845698223 }
+{ "_id" : { "key" : "fuel_consumption_pr___km___miles" }, "value" : { "type" : "String" }, "totalOccurrences" : 809, "percentContaining" : 4.060837265334806 }
+{ "_id" : { "key" : "instruments" }, "value" : { "type" : "String" }, "totalOccurrences" : 733, "percentContaining" : 3.6793494629053307 }
+{ "_id" : { "key" : "Rear_suspension_travel_" }, "value" : { "type" : "String" }, "totalOccurrences" : 691, "percentContaining" : 3.468527256299568 }
+{ "_id" : { "key" : "Front_suspension_travel_" }, "value" : { "type" : "String" }, "totalOccurrences" : 690, "percentContaining" : 3.463507679951812 }
+{ "_id" : { "key" : "Lubrication_system_" }, "value" : { "type" : "String" }, "totalOccurrences" : 643, "percentContaining" : 3.2275875916072687 }
+{ "_id" : { "key" : "comments" }, "value" : { "type" : "String" }, "totalOccurrences" : 636, "percentContaining" : 3.1924505571729744 }
+{ "_id" : { "key" : "seat" }, "value" : { "type" : "String" }, "totalOccurrences" : 552, "percentContaining" : 2.7708061439614498 }
+{ "_id" : { "key" : "Rake_fork_angle_" }, "value" : { "type" : "String" }, "totalOccurrences" : 537, "percentContaining" : 2.695512498745106 }
+{ "_id" : { "key" : "light" }, "value" : { "type" : "String" }, "totalOccurrences" : 471, "percentContaining" : 2.3642204597931933 }
+{ "_id" : { "key" : "Exhaust_system_" }, "value" : { "type" : "String" }, "totalOccurrences" : 466, "percentContaining" : 2.339122578054412 }
+{ "_id" : { "key" : "carrying_capacity" }, "value" : { "type" : "String" }, "totalOccurrences" : 449, "percentContaining" : 2.2537897801425557 }
+{ "_id" : { "key" : "Trail_" }, "value" : { "type" : "String" }, "totalOccurrences" : 374, "percentContaining" : 1.8773215540608374 }
+{ "_id" : { "key" : "max_rpm" }, "value" : { "type" : "String" }, "totalOccurrences" : 332, "percentContaining" : 1.6664993474550749 }
+{ "_id" : { "key" : "alternate_seat_height" }, "value" : { "type" : "String" }, "totalOccurrences" : 315, "percentContaining" : 1.5811665495432183 }
+{ "_id" : { "key" : "Driveline_" }, "value" : { "type" : "String" }, "totalOccurrences" : 302, "percentContaining" : 1.5159120570223874 }
+{ "_id" : { "key" : "Reserve_fuel_capacity_" }, "value" : { "type" : "String" }, "totalOccurrences" : 272, "percentContaining" : 1.3653247665896997 }
+{ "_id" : { "key" : "Wheels_" }, "value" : { "type" : "String" }, "totalOccurrences" : 267, "percentContaining" : 1.3402268848509187 }
+{ "_id" : { "key" : "Engine_details_" }, "value" : { "type" : "String" }, "totalOccurrences" : 233, "percentContaining" : 1.169561289027206 }
+{ "_id" : { "key" : "km_h____mph" }, "value" : { "type" : "String" }, "totalOccurrences" : 208, "percentContaining" : 1.0440718803332998 }
+{ "_id" : { "key" : "modifications_compared_to_previous_model" }, "value" : { "type" : "String" }, "totalOccurrences" : 198, "percentContaining" : 0.9938761168557374 }
+{ "_id" : { "key" : "front_percentage_of_weight" }, "value" : { "type" : "String" }, "totalOccurrences" : 193, "percentContaining" : 0.9687782351169562 }
+{ "_id" : { "key" : "Oil_capacity_" }, "value" : { "type" : "String" }, "totalOccurrences" : 175, "percentContaining" : 0.8784258608573436 }
+{ "_id" : { "key" : "Fuel_consumption_" }, "value" : { "type" : "String" }, "totalOccurrences" : 175, "percentContaining" : 0.8784258608573436 }
+{ "_id" : { "key" : "Greenhouse_gases_" }, "value" : { "type" : "String" }, "totalOccurrences" : 175, "percentContaining" : 0.8784258608573436 }
+{ "_id" : { "key" : "Factory_warranty_" }, "value" : { "type" : "String" }, "totalOccurrences" : 174, "percentContaining" : 0.8734062845095875 }
+{ "_id" : { "key" : "Electrical_" }, "value" : { "type" : "String" }, "totalOccurrences" : 161, "percentContaining" : 0.8081517919887562 }
+{ "_id" : { "key" : "Emission_details_" }, "value" : { "type" : "String" }, "totalOccurrences" : 151, "percentContaining" : 0.7579560285111937 }
+{ "_id" : { "key" : "km_h____mph__highest_gear" }, "value" : { "type" : "String" }, "totalOccurrences" : 130, "percentContaining" : 0.6525449252083124 }
+{ "_id" : { "key" : "Fuel_consumption_pr___km___miles_" }, "value" : { "type" : "String" }, "totalOccurrences" : 123, "percentContaining" : 0.6174078907740186 }
+{ "_id" : { "key" : "Instruments_" }, "value" : { "type" : "String" }, "totalOccurrences" : 120, "percentContaining" : 0.6023491617307499 }
+{ "_id" : { "key" : "Comments_" }, "value" : { "type" : "String" }, "totalOccurrences" : 115, "percentContaining" : 0.5772512799919687 }
+{ "_id" : { "key" : "Seat_" }, "value" : { "type" : "String" }, "totalOccurrences" : 78, "percentContaining" : 0.3915269551249875 }
+{ "_id" : { "key" : "Light_" }, "value" : { "type" : "String" }, "totalOccurrences" : 77, "percentContaining" : 0.3865073787772312 }
+{ "_id" : { "key" : "Carrying_capacity_" }, "value" : { "type" : "String" }, "totalOccurrences" : 75, "percentContaining" : 0.3764682260817187 }
+{ "_id" : { "key" : "mile___km" }, "value" : { "type" : "String" }, "totalOccurrences" : 59, "percentContaining" : 0.2961550045176187 }
+{ "_id" : { "key" : "rear_percentage_of_weight" }, "value" : { "type" : "String" }, "totalOccurrences" : 49, "percentContaining" : 0.2459592410400562 }
+{ "_id" : { "key" : "Alternate_seat_height_" }, "value" : { "type" : "String" }, "totalOccurrences" : 47, "percentContaining" : 0.2359200883445437 }
+{ "_id" : { "key" : "Max_RPM_" }, "value" : { "type" : "String" }, "totalOccurrences" : 45, "percentContaining" : 0.22588093564903122 }
+{ "_id" : { "key" : "___km_h____mph_" }, "value" : { "type" : "String" }, "totalOccurrences" : 28, "percentContaining" : 0.14054813773717498 }
+{ "_id" : { "key" : "Front_percentage_of_weight_" }, "value" : { "type" : "String" }, "totalOccurrences" : 26, "percentContaining" : 0.13050898504166247 }
+{ "_id" : { "key" : "Modifications_compared_to_previous_model_" }, "value" : { "type" : "String" }, "totalOccurrences" : 25, "percentContaining" : 0.12548940869390623 }
+{ "_id" : { "key" : "____km_h____mph__highest_gear_" }, "value" : { "type" : "String" }, "totalOccurrences" : 16, "percentContaining" : 0.08031322156409999 }
+{ "_id" : { "key" : "Rear_percentage_of_weight_" }, "value" : { "type" : "String" }, "totalOccurrences" : 11, "percentContaining" : 0.055215339825318746 }
+{ "_id" : { "key" : "__mile___km_" }, "value" : { "type" : "String" }, "totalOccurrences" : 9, "percentContaining" : 0.04517618712980625 }
+{ "_id" : { "key" : "litres____gallons" }, "value" : { "type" : "String" }, "totalOccurrences" : 2, "percentContaining" : 0.010039152695512499 }
+{ "_id" : { "key" : "kmh" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "spec" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "brakes" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "suspension_front" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "battery" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "tyre_rear" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "tyre_front" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "transmission" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "frame" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "air" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "color" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "cdi" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "dual_front_light" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "year___miles_limited_warranty" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "belt" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "kg____pounds" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "x___mm___x___inches" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "scooter" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "hydraulic_twin_shock" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "mm____inches_if_adjustable_lowest_setting" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "electric" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "silvertone_bullet_exhaust_pipe" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "single_cylinder_four_stroke" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "ccm____cubic_inches" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "single_disc" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "hp_kg" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "telescopic_hydraulic_fork" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "injection" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "mm____inches" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "lightweight_cast_aluminum__spoke" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "nm___kgf_m_or___ft_lbs" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "automatic" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "___litres____gallons_" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Torque:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Gearbox:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Power:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Year:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Category:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Front brakes:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Rear brakes:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Model:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Power/weight ratio:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Displacement:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Valves per cylinder:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Stroke:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Dry weight:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{ "_id" : { "key" : "Engine type:" }, "value" : { "type" : "String" }, "totalOccurrences" : 1, "percentContaining" : 0.0050195763477562496 }
+{% endhighlight %}
+</div>

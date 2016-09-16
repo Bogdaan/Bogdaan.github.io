@@ -1,0 +1,29 @@
+---
+layout: post
+status: publish
+published: true
+title: DLink dir320 - Стандартная прошивка - это плохо
+
+date: '2011-04-28 22:39:00 +0300'
+
+categories:
+- hardware
+tags:
+- dd-wrt
+- dlink
+---
+<p>
+    Firmware: 1.21.
+    Понадобилось написать скрипт для включения/выключения wifi. Оказалось что
+    каптча, на самом деле не каптча :). Ее можно обойти. Последняя надежда
+    на ACL, иначе ничто не спасает от брута по wifi (разве что другая прошивка %))
+</p>
+<p>
+    Вот <a href="https://docs.google.com/leaf?id=0B_DB4iX_V3uCYzQzZDA1OTktNzVhNy00ODdkLTkyNzItNDlmYzk3NGI0MzUz&amp;hl=en">скрипт</a>
+    для включения/выключения wifi. В начале файла настройки (3 дефайна и массив
+    wifi) - туда нужно вставить свои данные.
+</p>
+<p>После этого можно просто вызвать:</p>
+<pre class="prettyprint sh-lang">./wifi-manage.php disable</pre>
+<p>или так:</p>
+<pre class="prettyprint sh-lang">php -f ./wifi-manage.php disable</pre>

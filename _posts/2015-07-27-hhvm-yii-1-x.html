@@ -1,0 +1,182 @@
+---
+layout: post
+status: publish
+published: true
+title: hhvm вместе с yii-1.x
+
+date: '2015-07-27 17:31:11 +0300'
+
+categories:
+- backend
+tags:
+- php
+- yii
+- hhvm
+---
+<p>
+    Несмотря на то, что yii-1.x по результатам тестов на 98% совместим с hhvm,
+    существуют несколько ситуаций в которых код не работает или работает не
+    по плану.
+</p>
+<p>
+    Одна из таких ситуаций - это белая страница (white page) в случае
+    возникновения не обработанного исключения. Другими словами любое
+    CHttpException (страница не найдена) приведет к фатальной ошибке с белой
+    страницей. Все несовместимость заключается в схеме обработки ошибок в
+    классе <a href="https://github.com/yiisoft/yii/blob/24539dd94dc86e2b4a966975e2f5029bcb20949d/framework/base/CApplication.php">CApplication</a>,
+    а именно в методах <strong>handleException</strong> и 
+    <strong>handleError </strong>(если быть точней в использовании
+    try-catch в этих методах).
+</p>
+<p>
+    Структура фреймворка позволяет выключить встроенные методы обработки ошибок
+    c помощью констант <strong>YII_ENABLE_EXCEPTION_HANDLER</strong> и 
+    <strong>YII_ENABLE_ERROR_HANDLER</strong>. С помощью данных констант
+    возможно выключить или включить стандартные методы обработки ошибок и
+    исключений в ядре. Выключим эти обработчики и определим свои.
+</p>
+
+<p>Итак, создадим класс Hhvm.php в protected.components:</p>
+{% highlight php %}
+<?php
+/**
+ * How to prevent "white page" on CHttpException and other errors
+ *
+ * Instruction:
+ * 1. place Hhvm.php to protected.components
+ * 2. add to index.php lines:
+ *
+ * define('YII_DEBUG', false);
+ * define('YII_ENABLE_EXCEPTION_HANDLER', false); // disable yii exception handler
+ * define('YII_ENABLE_ERROR_HANDLER', false); // disable yii error handler
+ *
+ *
+ * //////
+ * ///// <------ config and other code here
+ * /////
+ *
+ * // init YII
+ * $app = Yii::createWebApplication($config);
+ *
+ * // add hhvm handlers
+ * Hhvm::initSystemHandlers();
+ * $app->run();
+ *
+ * 3. proffit
+ *
+ *
+ * @see Hhvm::initSystemHandlers
+ * @author hcbogdan
+ */
+class Hhvm
+{
+    public static function handleException($exception)
+	{
+        // disable error capturing to avoid recursive errors
+        restore_error_handler();
+        restore_exception_handler();
+        $category='exception.'.get_class($exception);
+        if($exception instanceof CHttpException)
+            $category.='.'.$exception->statusCode;
+        // php <5.2 doesn't support string conversion auto-magically
+        $message=$exception->__toString();
+        if(isset($_SERVER['REQUEST_URI']))
+            $message.="\nREQUEST_URI=".$_SERVER['REQUEST_URI'];
+        if(isset($_SERVER['HTTP_REFERER']))
+            $message.="\nHTTP_REFERER=".$_SERVER['HTTP_REFERER'];
+        $message.="\n---";
+        Yii::log($message,CLogger::LEVEL_ERROR,$category);
+        $event=new CExceptionEvent(app(),$exception);
+        app()->onException($event);
+        if(!$event->handled)
+        {
+            // try an error handler
+            if(($handler=app()->getErrorHandler())!==null)
+                $handler->handle($event);
+            else
+                app()->displayException($exception);
+        }
+	}
+    public static function handleError($code,$message,$file,$line)
+	{
+		if($code &amp; error_reporting())
+		{
+			// disable error capturing to avoid recursive errors
+			restore_error_handler();
+			restore_exception_handler();
+			$log="$message ($file:$line)\nStack trace:\n";
+			$trace=debug_backtrace();
+			// skip the first 3 stacks as they do not tell the error position
+			if(count($trace)&gt;3)
+				$trace=array_slice($trace,3);
+			foreach($trace as $i=&gt;$t)
+			{
+				if(!isset($t['file']))
+					$t['file']='unknown';
+				if(!isset($t['line']))
+					$t['line']=0;
+				if(!isset($t['function']))
+					$t['function']='unknown';
+				$log.="#$i {$t['file']}({$t['line']}): ";
+				if(isset($t['object']) &amp;&amp; is_object($t['object']))
+					$log.=get_class($t['object']).'->';
+				$log.="{$t['function']}()\n";
+			}
+			if(isset($_SERVER['REQUEST_URI']))
+				$log.='REQUEST_URI='.$_SERVER['REQUEST_URI'];
+			Yii::log($log,CLogger::LEVEL_ERROR,'php');
+			Yii::import('CErrorEvent',true);
+			$event=new CErrorEvent(app(),$code,$message,$file,$line);
+			app()->onError($event);
+			if(!$event->handled)
+			{
+				// try an error handler
+				if(($handler=app()->getErrorHandler())!==null)
+					$handler->handle($event);
+				else
+					app()->displayError($code,$message,$file,$line);
+			}
+		}
+	}
+    /**
+	 * Initializes the error handlers.
+	 */
+	public static function initSystemHandlers()
+	{
+        set_exception_handler('Hhvm::handleException');
+        if(YII_DEBUG)
+            set_error_handler('Hhvm::handleError', error_reporting());
+	}
+}
+{% endhighlight %}
+
+<p>
+    Далее модифицируем index.php - переключим обработку ошибок в наш класс,
+    который учитываем возможности виртуальной машины:
+</p>
+{% highlight php %}
+<?php
+define('YII_DEBUG', false);
+
+//
+// Выключаем старые обработчики
+//
+define('YII_ENABLE_EXCEPTION_HANDLER', false);
+define('YII_ENABLE_ERROR_HANDLER', false);
+
+$autoload = PROJECT_ROOT.'/vendor/autoload.php';
+$config   = PROJECT_ROOT.'/protected/config/main.php';
+$yii      = PROJECT_ROOT.'/vendor/yiisoft/yii/framework/yii.php';
+
+require_once($yii);
+require_once($autoload);
+
+$app = Yii::createWebApplication($config);
+Hhvm::initSystemHandlers(); // <-------- обработка ошибок
+$app->run();
+{% endhighlight %}
+
+<p>
+    Вот собственно и весь хак который позволит совместить обработку ошибок
+    в ядре yii с особенностями hhvm.
+</p>

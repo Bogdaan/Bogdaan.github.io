@@ -1,0 +1,131 @@
+---
+layout: post
+status: publish
+published: true
+title: vim как php ide
+
+date: '2013-09-03 10:34:00 +0300'
+
+categories:
+- utils
+tags:
+- linux
+- vim
+---
+
+<p>
+    Давно уже использую связку Eclipse &amp; AptanaStudio в качестве IDE для
+    веб проектов. В плане функционала - устраивает все,&nbsp; удобно расположено
+    и настраивается. Единственный минус для меня - это чрезмерное использование
+    ресурсов. Очень уж любит AptanaStudio оперативную память.
+</p>
+<p>
+    Небольшой набор плагинов, заточенных только для php, вместе с аптаной занимает
+    у меня порядка 2Gb в процессе работы, и почти 60% ресурсов cpu.<br />
+    В качестве jre я использовал oracle-java ( не open-jre ), и ограничения по
+    памяти и количеству тредов в настройках аптаны.
+</p>
+
+<p>
+    Поэтому, решено было переноситься на vim. Конечно, полностью заменить
+    аптану не удалось (настройки деплоя, и индивидуальные настройки и другие вещи),
+     но все же для продвинутых пользователей - это достаточно хорошая альтернатива,
+     до тех пор пока не установим еще хотя бы 8Gb памяти.
+ </p>
+
+<p>Настройка под ide сводиться у меня к установке и настройке слудующих плагинов:</p>
+<ol>
+    <li><a href="https://github.com/gmarik/vundle" target="_blank">vundle</a> - менеджер плагинов для vim. Автоматизирует загрузку, установку и управление плагинами. </li>
+    <li><a href="https://github.com/scrooloose/nerdtree" target="_blank">NERDTree</a> - один из самых полезных плагинов, представляет собой окно с деревом каталогов и файлов.</li>
+    <li><a href="https://github.com/kien/ctrlp.vim">ctrlp.vim</a> - выводит список полседних редактируемых файлов, буферов, список тегов</li>
+    <li><a href="https://github.com/mileszs/ack.vim">ack</a> - продвинутый поиск по файлам </li>
+    <li><a href="https://github.com/scrooloose/nerdcommenter">nerdcommenter</a> - операции по коментированию код</li>
+    <li><a href="https://github.com/scrooloose/syntastic">Syntastic</a> - проверка синтаксиса</li>
+    <li><a href="https://github.com/vim-scripts/IndexedSearch">IndexedSearch</a> - замена стандартным функциям поиска по файлу</li>
+    <li><a href="https://github.com/vim-scripts/taglist.vim">taglist</a> - outline/список тегов и сущностей</li>
+    <li><a href="https://github.com/stephpy/vim-php-cs-fixer">vim-php-cs-fixer</a> - фиксер кода, проверка на соответвие PSR</li>
+    <li><a href="https://github.com/mattn/emmet-vim">emmet-vim</a> - для быстрого создания html шаблонов</li>
+    <li><a href="https://github.com/pangloss/vim-javascript">vim-javascript</a> - работа с синтаксисом js
+    </li>
+</ol>
+
+<p>Мой ~/.vimrc для разработки:</p>
+<pre>
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" common
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'mileszs/ack.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/syntastic'
+Bundle 'vim-scripts/IndexedSearch'
+Bundle 'vim-scripts/L9.git'
+Bundle 'vim-scripts/taglist.vim'
+
+" php
+Bundle 'stephpy/vim-php-cs-fixer'
+
+" python&amp;django
+Bundle 'klen/python-mode'
+Bundle 'chazy/cscope_maps'
+Bundle 'joonty/vim-phpqa'
+
+" ryby&amp;rails
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-rake'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-endwise'
+
+" html&amp;js
+Bundle 'mattn/emmet-vim'
+Bundle 'pangloss/vim-javascript'
+
+" Bundle 'vim-scripts/matchit.zip'
+" Bundle 'ervandew/supertab'
+" Bundle 'Raimondi/delimitMate'
+" Bundle 'godlygeek/tabular'
+" Bundle 'tpope/vim-cucumber'
+" Bundle 'tpope/vim-haml'
+" Bundle 'kchmck/vim-coffee-script'
+" The bundles you install will be listed here
+
+" filetype plugin on
+filetype plugin indent on
+
+augroup vimrc_autocmds
+    autocmd!
+    " highlight characters past column 120
+    autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+    autocmd FileType python match Excess /%120v.*/
+    autocmd FileType python set nowrap
+augroup END
+
+
+" set guifont=DejaVu Sans Mono for Powerline 9
+set laststatus=2
+
+
+map  :NERDTreeToggle
+nmap  :cs find g =expand("")
+
+set autoindent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+</pre>
+
+<p>
+    После изменений в vimrc, заходим в vim и выполняем :BundleInstall.
+    После того как все пакеты будут загружены и установлены, можно ознакомиться
+    с справкой по каждому пакету.
+</p>

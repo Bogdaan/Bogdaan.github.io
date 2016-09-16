@@ -1,0 +1,62 @@
+---
+layout: post
+status: publish
+published: true
+title: Как работают async/await Node.js (вступление)
+
+date: '2015-12-25 11:44:53 +0200'
+
+
+categories:
+- Node.js
+tags:
+- перевод
+- nodejs
+---
+<p>
+    <strong>async/await</strong> созданы для того чтобы избежать ада
+    callback-функций в коде. Данная идея была позаимствована из C#
+    (который также содержит операторы async/await о похожим назначением).
+    Смысл данного оператора заключается в следующем: он позволяет создать функцию
+    которая будет ожадать выполнения в каждой асинхронной операции прежде чем
+    приступить к следующей инструкции (или оператору).
+</p>
+
+<p>Смысл этих операторов продемонстрирован в примере:</p>
+{% highlight JavaScript %}
+let getResultAndConinue = async (function() {
+    let apiResponce = await (remoteApiCall());
+    return processResult(apiResponce);
+});
+{% endhighlight %}
+
+<p>
+    Без использования операторов async и await данный пример может выглядеть
+    следующим образом:
+</p>
+{% highlight JavaScript %}
+function oldstyle(cb) {
+  remoteApiCall(function(result){
+     cb( processResult(result) );
+  })
+}
+
+oldstyle(function(result){
+  var getResultAndConinue = result;
+})
+{% endhighlight %}
+
+<p>
+    Выполнение функции getResultAndContinue (в первом примере) не блокирует 
+    EventLoop, но выполнение приостанавливается в await операторе. В это это
+    время EventLoop может выполнять другие операции не связанные с приостановленной
+    операцией. Это позволяет создавать код, который обрабатывает поток данных
+    также эффективно, как и в случае callback-функций.
+</p>
+
+<p>Таким образом использование async/await дает следующие преимущества:</p>
+<ul>
+    <li>возможность убрать callback-hell из кода</li>
+    <li>полностью неблокирующий EventLoop подход</li>
+    <li>возможно использовать в TypeScript</li>
+</ul>

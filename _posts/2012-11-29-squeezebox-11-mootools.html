@@ -1,0 +1,19 @@
+---
+layout: post
+status: publish
+published: true
+title: SqueezeBox 1.1 и mootools
+
+date: '2012-11-29 12:43:00 +0200'
+
+categories:
+- bugs
+tags:
+- js
+---
+<p>При "открытии" webkit браузеры выдают:</p>
+<pre class="prettyprint">NS_ERROR_XPC_BAD_CONVERT_JS: Could not convert JavaScript argument arg 0 [nsIDOMHTMLDivElement.contains]</pre>
+<p>Собственно лечиться заменой ( строка 208):</p>
+<pre class="prettyprint">else if (!this.content.hasChild(content)) this.content.adopt(content);</pre>
+<p>на<br /></p>
+<pre class="prettyprint">else {this.content.adopt(content);}</pre>

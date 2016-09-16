@@ -1,0 +1,177 @@
+---
+layout: post
+status: publish
+published: true
+title: Ускоряемся с помощью yeoman
+
+date: '2015-03-08 14:24:00 +0200'
+
+
+categories:
+- utils
+tags:
+- generators
+- productivity tools
+- yo
+---
+
+<p>Наверняка у каждого найдется набор заготовок для использования в проектах различного назначения. Например:</p>
+<ul>
+    <li>для блога берем актуальный релиз wp</li>
+    <li>загружаем и настраиваем определенную CMS для интернет магазина</li>
+    <li>yii для проекта определенной структуры</li>
+    <li>нам нужно заверстать psd, и мы берем уже готовые собственные наработки (в виде scss, css, html, less файлов)</li>
+    <li>берем html5-boilerplate, тему bootstrap либо другую "базу" для доработки</li>
+    <li>создаем android приложение "с нуля"</li>
+    <li>создаем мультиплатформенное приложение, скажем на базе Apache Cordova</li>
+</ul>
+
+<p>
+    Для всего этого (и не только) предназначен генератор
+    <a href="http://yeoman.io/">yeoman</a>, именно генерировать первоначальную
+    структуру проекта. Вы спросите: зачем мне использовать генератор если у
+    меня и так все получается путем copy-past?<br />
+    Плюсов много, но главные из них это:
+</p>
+<ol>
+    <li><b>Уменьшаем затраты</b> своего времени, т.к. многое из того что делаем
+        вручную можно сделать в полу-автоматическом режиме
+        (например установку-настройку-запуск wordpress c помощью генератора можно
+        пройти за минуту)</li>
+    <li>Использовать <b>лучшие практики</b> построения проектов. Если это касается
+        frontend-а то: bower, grunt, glup. Если это касается backend-части то
+        вы получаете продуманно сгенерированную файловую структуру проекта.</li>
+    <li>Достаточно большое <b>количество уже готовых решений</b>, зачем
+        изобретать велосипед? Используйте сторонние разработки, возможно их
+        подход будет более продвинутым.</li>
+</ol>
+
+<p>Прежде чем приступить к использованию генераторов, необходимо:</p>
+<ol style="text-align: left;">
+    <li>Установить node.js (если у кого не установлен, используем <a href="https://nodejs.org/">документацию</a> или <a href="http://habrahabr.ru/post/243335/">эту статью</a>)</li>
+    <li>npm (менеджер пакетов ноды, устанавливаем все вместе по документации из первого пункта)</li>
+    <li>Установить минималистичекский набор пакетов для создания полноценного фронтенда (npm install -g yo bower grunt-cli gulp)</li>
+    <li>Несколько минут свободного времени</li>
+</ol>
+
+<p>
+    Для примера, давайте попробуем создать скелет backbone приложения с помощью
+    генератора. Примеры будут показаны на ubuntu-хосте, но в других случаях
+    результат будет схожим.<br />
+    Открываем терминал (или cygwin, если еще кто-то сидит на windows) и убедимся
+    что у нас есть node+npm:
+</p>
+{% highlight bash %}$ node -v # проверяем версию nodejs
+v0.10.25
+$ npm -v # проверяем версию npm
+1.3.10
+{% endhighlight %}
+
+<p>
+    Если мы видим примерно такой результат, то можем продолжать, иначе вам нужно
+    установить node.js (ссылки на документацию и статьи выше).<br />
+    Создадим папку backbonde-tests для наших тестов.
+</p>
+{% highlight bash %}$ mkdir backbonde-tests &amp;&amp; cd $_
+{% endhighlight %}
+
+<p>Установим yeoman, grunt, glup:</p>
+{% highlight bash %}$ npm install -g yo bower grunt-cli gulp
+npm http GET https://registry.npmjs.org/grunt-cli
+npm http GET https://registry.npmjs.org/bower
+npm http GET https://registry.npmjs.org/gulp
+..................
+{% endhighlight %}
+
+<p>Устанавливаем генератор backbone приложения (его будет использовать yeoman):</p>
+{% highlight bash %}$ npm install generator-backbone
+npm http GET https://registry.npmjs.org/generator-backbone
+npm http 200 https://registry.npmjs.org/generator-backbone
+.................
+{% endhighlight %}
+
+<p>Запускаем генератор в папке проекта, создаем проект под именем "backbone-tests":</p>
+{% highlight bash %}$ yo backbone backbone-tests
+
+     _-----_
+    |       |
+    |--(o)--|   .--------------------------.
+   `---------´  |    Welcome to Yeoman,    |
+    ( _´U`_ )   |   ladies and gentlemen!  |
+    /___A___   '__________________________'
+     |  ~  |
+   __'.___.'__
+ ´   `  |° ´ Y `
+
+Out of the box I include HTML5 Boilerplate, jQuery, Backbone.js and Modernizr.
+? What more would you like?
+❯◉ Twitter Bootstrap for Sass
+ ◯ Use CoffeeScript
+ ◯ Use RequireJs
+{% endhighlight %}
+
+<p>
+    На данном этапе мы выбираем опции генератора, выберем только генерацию sass.
+    После этого будет произведена загрузка необходимых пакетов и генерация структуры.
+    Посмотрим что сгенерировалось в итоге:
+</p>
+{% highlight bash %}$ ls
+app  bower.json  dist  Gruntfile.js  node_modules  package.json  test
+{% endhighlight %}
+
+<p>
+    Готово, в результате мы получили готовую структуру, и несколько
+    дополнительных плюсов. А именно: теперь мы можем генерировать backbone-модели,
+    backbone-контролеры, и многое другое. Например генерируем модель order:
+</p>
+{% highlight bash %}$ yo backbone:router order
+   create app/scripts/routes/order.js
+   create test/routers/order.spec.js
+$ yo backbone:collection order
+   create app/scripts/collections/order.js
+   create test/collections/order.spec.js
+$ yo backbone:model order
+   create app/scripts/models/order.js
+   create test/models/order.spec.js
+$ yo backbone:view order
+   create app/scripts/templates/order.ejs
+   create app/scripts/views/order.js
+   create test/views/order.spec.js
+{% endhighlight %}
+
+<p>
+    В Gruntfile.js уже внесено несколько задач, допустим можно сделать сборку,
+    или запустить livereload и вносить изменения интерактивно. Попробуем:
+</p>
+{% highlight bash %}$ grunt serve
+Running "serve" task
+
+Running "clean:server" (clean) task
+&gt;&gt; 1 path cleaned.
+
+Running "createDefaultTemplate" task
+
+Running "jst:compile" (jst) task
+File .tmp/scripts/templates.js created.
+
+Running "sass:server" (sass) task
+
+Running "connect:livereload" (connect) task
+Started connect web server on http://localhost:9000
+
+Running "open:server" (open) task
+
+Running "watch" task
+Waiting...
+{% endhighlight %}
+
+
+<p>
+    Таким образом, конкретные генераторы устанавливаются и запускаются отдельно,
+    yo выступает в качестве стартера, и декларирует оформление генераторов.
+    Вы можете оформить собственный генератор, опубликовать его на githab-e, и
+    использовать его в повседневных проектах.<br />
+    В данном посте рассматривался небольшой набор возможностей одного из генератора.
+    Поискать готовые генераторы, и ознакомиться с полный функционалом,
+    можно на соответствующем <a href="http://yeoman.io/generators/">странице проекта yeoman</a>.
+</p>

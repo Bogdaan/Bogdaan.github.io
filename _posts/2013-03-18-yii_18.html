@@ -1,0 +1,164 @@
+---
+layout: post
+status: publish
+published: true
+title: 'yii: загрузка фикстур'
+
+date: '2013-03-18 19:49:00 +0200'
+
+categories:
+- backend
+tags:
+- php
+- yii
+- yii framework
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Часто в проекте сайта необходимо загрузить тестовые данные,&nbsp; для проверки бизнес-логики, тестирования либо внешнего вида страниц. Собственно стандартной возможности в Yii 1.1.13 я не нашел. Для этого написал небольшую консольную утилиту (<a href="http://www.yiiframework.com/doc/guide/1.1/ru/topics.console" target="_blank">документация</a>):</p>
+<p><a name='more'></a></p>
+</div>
+<pre class="prettyprint">&lt;?php
+
+class FixturesCommand extends CConsoleCommand
+{
+    public $fixturesPath;
+
+
+    public function __construct($name,$runner){
+        parent::__construct($name,$runner);
+        $this-&gt;fixturesPath = Yii::getPathOfAlias('root').'/console/fixtures';
+    }
+
+    public function getHelp(){
+        echo &lt;&lt;&lt;'EOF'
+Usage: yiic fixtures [load | loadall | list] --type=&lt;name&gt;
+ Option "load":
+   This command include fixture class file ( ROOT/console/fixtures/&lt;name&gt;Fixture.php )
+   and call load() method. Require --type option.
+ Option "loadall":
+   Load all fixtures at ( ROOT/console/fixtures/ ).
+ Option "list":
+   Show all availible fixtures.
+EOF;
+        echo "n";
+    }
+
+    public function actionIndex(){
+        $this-&gt;getHelp();
+    }
+
+    public function actionLoad($type) {
+        $fixturesPath = $this-&gt;fixturesPath;
+        $fixtureClass = ucfirst($type).'Fixture';
+        $fixtureFile = $fixtureClass.'.php';
+        $fixtureFullPath = $fixturesPath.'/'.$fixtureFile;
+
+        if( file_exists($fixtureFullPath) ){
+            return $this-&gt;loadFromFile($fixtureFullPath, $fixtureClass);
+
+        }else{
+            echo '*** fail: fixture file does not exists '.$fixtureFile.'('.$fixtureFullPath.')'."n";
+            return 1;
+        }
+    }
+
+
+    public function actionList() {
+        echo "*** availible fixtures:n";
+        $allFixtures = $this-&gt;getFixturesList();
+        foreach($allFixtures as $fixture ){
+            echo '-&gt; '.$fixture['class']."n";
+        }
+        echo "*** total:".count($allFixtures)."n";
+    }
+
+
+    public function actionLoadall(){
+        echo "*** load all fixtures:n";
+
+        $allFixtures = $this-&gt;getFixturesList();
+        foreach($allFixtures as $fixture ){
+            echo '*** load - '.$fixture['class'];
+            $ret = $this-&gt;loadFromFile($fixture['path'], $fixture['class']);
+            if($ret==0){
+                echo " - successn";
+            }else{
+                echo " - fail(".$ret.") n";
+            }
+        }
+        echo "*** total:".count($allFixtures)."n";
+    }
+
+
+    protected function loadFromFile($fixtureFullPath, $fixtureClass){
+        if(!file_exists($fixtureFullPath)){
+            echo '*** fail: fixture file not found '.$fixtureClass.' ('.$fixtureFullPath.')'."n";
+            return 2;
+        }
+        Yii::import('root.console.fixtures.'.$fixtureClass);
+
+        if(class_exists($fixtureClass)){
+            $fixt = new $fixtureClass;
+            if( method_exists($fixt, 'load') ){
+                $fixt-&gt;load();
+            }else{
+                echo '*** fail: fixture method not found at '.$fixtureClass.' ('.$fixtureFullPath.')'."n";
+                return 3;
+            }
+
+        }else{
+            echo '*** fail: fixture class not found '.$fixtureClass.' at '.$fixtureFullPath."n";
+            return 4;
+        }
+
+        return 0;
+    }
+
+    protected function getFixturesList(){
+        $fixturesPath = $this-&gt;fixturesPath;
+
+        $allFixtures = array();
+        $hdir = opendir($fixturesPath);
+        while ( ($fname=readdir($hdir))!==false ) {
+            if( preg_match('/([[:alnum:]]+Fixture).php$/s', $fname, $pockets) ){
+                $filePath = $fixturesPath.'/'.$fname;
+                $fixtureClass = $pockets[1];
+
+                $allFixtures[] = array(
+                    'name'=&gt;$fname,
+                    'path'=&gt;$filePath,
+                    'class'=&gt;$fixtureClass,
+                );
+            }
+        }
+        closedir($hdir);
+
+        return $allFixtures;
+    }
+
+} </pre>
+<p><br/><br />
+<br/></p>
+<div>
+Пример класса фикстур (ROOT/console/fixtures/ArticleFixture.php)</div>
+<p><br/></p>
+<pre class="prettyprint">&lt;?php
+
+class ArticleFixture {
+
+    public function load(){
+        for($i=1; $i&lt;10; $i++){
+            $art = new Article();
+            $art-&gt;content = 'article content - #'.$i;
+            $art-&gt;short_content = 'short content '.$i;
+            $art-&gt;name = 'article - #'.$i;
+            $art-&gt;is_visible = 1;
+            $art-&gt;created_at = time();
+            $art-&gt;updated_at = time();
+        }
+    }
+
+}
+</pre>
+</div>

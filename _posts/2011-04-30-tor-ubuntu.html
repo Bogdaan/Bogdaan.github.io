@@ -1,0 +1,68 @@
+---
+layout: post
+status: publish
+published: true
+title: Устанавливаем Tor на Ubuntu
+
+date: '2011-04-30 18:45:00 +0300'
+
+categories:
+- linux
+tags:
+- ubuntu
+- linux
+- tor
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Для анонимного серфа в интернете можно использовать сеть TOR. Что это такое можно прочитать на <a href="https://www.torproject.org/">сайте разработчиков</a>.<br />
+А теперь о том, как запустить все это под Ubuntu.<br />
+Софт:<br />
+tor - сама программа для "onion" маршрутизации.<br />
+socat, toryfy - для проброски через SOCKS TCP трафика. </p>
+<p>Желательно также установить:<br />
+privoxy - прокси сервер, который будет проксировать трафик SOCKS серверу tor. А еще - фильтровать рекламу, куки, "плохие" заголовки, апплеты итд.<br />
+polipo - кэширующий прокси.<br />
+Vidalia - GUI интерфейс к tor. Умеет запускать/останавливать(прокси и tor), показывать лог, показывать график загруженности канала.</p>
+<p>1. Установка:<br />
+Пакет "tor" в убунте не поддерживаеться поэтому<br />
+добавим источник пакетов, как написано <a href="https://www.torproject.org/docs/debian.html.en">на сайте разработчиков</a>:</p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">#echo "deb   http://deb.torproject.org/torproject.org"`lsb_release -c | sed -r 's/Codename:s//g'`"  main" &gt;&gt; /etc/apt/sources.list
+</pre>
+<p>Установим gpg ключи:</p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">$gpg --keyserver keys.gnupg.net --recv 886DDD89
+$gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+#apt-get update
+#apt-get install tor tor-geoipdb
+</pre>
+<p>Далее нам нужно установить прокси сервер, чтобы пробрасывать DNS запросы на SOCKS сервер. Этого можно не делать, но тогда все DNS запросы пойдут вашему провайдеру (о анонамности и речи не может быть). Если вам нужен кэширующий прокси смотрите Polipo. Мне же подойдет только фильтрующий Privoxy.<br />
+Установим Privoxy:</p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">#apt-get install privoxy
+</pre>
+<p>Если вы не хотите постоянно иметь запущенный tor демон, можно установить Vidalia:</p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">#apt-get install vidalia
+</pre>
+<p>
+2. Настройка:<br />
+Настроим Privoxy. Файлы конфигурации лежат в /etc/privoxy. Главный конфиг - /etc/privoxy/config.<br />
+Отредактируем его. </p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">#nano /etc/provoxy/config
+</pre>
+<p>Включим возможность редактирования действий через веб морду: </p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">enable-edit-actions 1
+</pre>
+<p>Добавим правила проксирования на Tor:</p>
+<pre class="prettyprint lang-sh" style="overflow: auto;">forward         192.168.*.*/    .
+forward         10.*.*.*/       .
+forward         127.0.0.*/      .
+forward-socks4a /               127.0.0.1:9050  .
+</pre>
+<p>Первые три forward задают правило - "проксировать трафик сетей  192.168.*.*, 10.*.*.*, 127.0.0.* на другой прокси, тоесть запросы к локальным сетям остаються у нас в сети. Четвертая строка означает - "проксировать все запросы (слэш /) через SOCKS4a на 127.0.0.1:9050 используя формат HTTP (тоесть без Via, X-Forwarded-For зависит от настроек)"<br />
+Теперь privoxy можно конфигурировать (+просматривать статус) через веб морду по адресу <a href="http://config.privoxy.org/">http://config.privoxy.org/</a>, там же можно почитать документацию.</p>
+<p>Настроим tor:<br />
+С гуишной утилитой и так все понятно. После устоновки tor стартует по системе init.d. Файл конфигурации - /etc/tor/torrc.<br />
+Для того чтобы tor не стартовал как системный сервис можно:<br />
+а) отредактировать /etc/default/tor, изменив RUN_DAEMON="no"; <br />
+б) использовать update-rc.d</p>
+<p>Настройка программ, использующих tor, сводиться к указанию нашего локального прокси (127.0.0.1:8118) или "соцификации" с помощью socat или torify.</p>
+<p>3. Итог:<br />
+У нас должен рабоать tor прокси на порту 9050, и Privoxy прокси на порту 8118. Проверить работоспособность tor можно по <a href="https://check.torproject.org/">этому</a> адресу.</div>

@@ -1,0 +1,41 @@
+---
+layout: post
+status: publish
+published: true
+title: 'Modx: Revolution 1.5.2 вывод галлереи постранично'
+
+
+date: '2012-07-20 13:52:00 +0300'
+
+categories:
+- cms
+tags:
+- modx
+- modx gallery pagination
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Для того чтобы создать пейджинг в галлерее нужен снипет getPage.</p>
+<p>В версии getPage 1.2.3 некорректно работает с снипетом Gallery -- не происходит перехода по страницам.</p>
+<p>Для того чтобы это исправить нужно внести правку в снипет getPage:</p>
+<p></div>
+<pre class="brush: php">$properties['offset'] = (!empty($properties['limit']) &amp;&amp;
+ !empty($properties['page'])) ? ($properties['limit'] *
+ ($properties['page'] - 1)) : 0;
+$properties['start'] = $properties['offset']; // добавить эту строку
+</pre>
+<p>После этого можно использовать такой сниппет:</p>
+<pre class="brush: html">
+[[!getPage?
+&amp;elementClass=`modSnippet`
+&amp;element=`Gallery`
+&amp;thumbWidth=`150`
+&amp;thumbHeight=`150`
+&amp;limit=`2`
+&amp;album=`1`
+]]
+[[!+page.nav]]
+
+</pre>
+</div>
+<p>upd: исправил</p>

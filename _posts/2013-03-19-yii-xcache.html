@@ -1,0 +1,23 @@
+---
+layout: post
+status: publish
+published: true
+title: 'Yii: миграции и xcache'
+
+date: '2013-03-19 15:41:00 +0200'
+
+categories:
+- backend
+tags:
+- php
+- yii
+- xcache
+---
+Недавно столкнулся с такой проблемой: при запуске миграций ( ./yiic migrate ) выдавалась ошибка:</p>
+<pre class="prettyprint">
+xcache_isset(): XCache var cache was not initialized properly
+</pre>
+<p>
+Собственно сайт работал в режиме fast-cgi, но php запускает yiic в cli режиме.<br />
+ Собственно проблема в том что xcache в режиме cli не работает.<br />
+Решение: создать отдельный конфиг для консольного приложения.

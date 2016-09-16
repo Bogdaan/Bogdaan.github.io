@@ -1,0 +1,186 @@
+---
+layout: post
+status: publish
+published: true
+title: Тунелируем ftp с помощью openssh
+
+date: '2013-05-08 20:51:00 +0300'
+
+categories:
+- linux
+tags:
+- "*nix"
+- ftp
+- proftpd
+- ssh
+- tunneling
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<br />
+Задача: открыть доступ по ftp на server2 через server1.</p>
+<p>В наличии:</p>
+<ol style="text-align: left;">
+<li>server2 - в моем случае маршрутизатор, dropbear ssh сервером/клиентом, proftpd в качестве ftp сервера.</li>
+<li>server1 - сetos с openssh сервером.</li>
+</ol>
+<div style="text-align: center;">
+Схема:</div>
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://3.bp.blogspot.com/-_OssDvXQf5Q/UYqsk2GoWqI/AAAAAAAAACE/65mwzpu4J30/s1600/dia-scheme.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="251" src="http://blog.local/app/uploads/2013/05/dia-scheme.png" width="320" />&nbsp;</a></div>
+<h4 class="separator" style="clear: both; text-align: left;">
+<a name='more'></a>&nbsp;Шаг 1: </h4>
+<div class="separator" style="clear: both; text-align: left;">
+Для начала нам нужны ssh ключи для PublicKey авторизации, с помощью которых мы будем подымать и поддерживать туннель (генерируем их на хосте который будет создавать и поддерживать туннель):&nbsp; </div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server2# ssh-keygen -t rsa</pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<h4 class="separator" style="clear: both; text-align: left;">
+Шаг 2: </h4>
+<div class="separator" style="clear: both; text-align: left;">
+Копируем публичный ключ в ~/.ssh/authorized_keys на сервер назначения:</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server2# echo 'ваш публичный ключ' &gt;&gt; ~/.ssh/authorized_keys</pre>
+<div class="separator" style="clear: both; text-align: left;">
+&nbsp;&nbsp;</div>
+<h4 class="separator" style="clear: both; text-align: left;">
+Шаг 3: </h4>
+<div class="separator" style="clear: both; text-align: left;">
+Для поддержания ssh туннелей в активном состоянии, нужно изменить конфиг ssh сервера ( в моем случае openssh на server2 ). Иначе возникнут постоянные обрывы соединения при первой же потери пакета.</div>
+<div class="separator" style="clear: both; text-align: left;">
+Проверяем следующие настройки:</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server2#: vim /etc/ssh/sshd_config</pre>
+<pre class="prettyprint">## для того, чтобы порты открывались на WAN интерфейсе
+
+GatewayPorts yes
+
+## поддержка соединения в "живом" состоянии
+TCPKeepAlive yes
+ClientAliveInterval 300
+ClientAliveCountMax 3
+
+## для авторизации по ключам
+PubkeyAuthentication yes
+
+</pre>
+</div>
+<p></p>
+<div class="separator" style="clear: both; text-align: left;">
+Перезапускаем openssh:</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server2# servise sshd restart </pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<h4 class="separator" style="clear: both; text-align: left;">
+Шаг 4:</h4>
+<div class="separator" style="clear: both; text-align: left;">
+Проверяем настройки proftpd на server2. Необходимо указать пассивные порты и "замаскировать" его под внешний адрес.</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server2# vim proftpd.conf
+</pre>
+<pre class="prettyprint"># добавляем пассивные порты
+PassivePorts 60000 60010
+
+# добавляем существующие dns имя
+MasqueradeAddress ftp.server1
+</pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+Перезапускаем proftpd:</div>
+<pre class="prettyprint">root@server2# killall -HUP proftpd
+</pre>
+<h4 class="separator" style="clear: both; text-align: left;">
+&nbsp;</h4>
+<h4 class="separator" style="clear: both; text-align: left;">
+&nbsp;Шаг 5 (если у вас не dropbear ssh, нужно изменить параметры соединения):</h4>
+<div class="separator" style="clear: both; text-align: left;">
+В случае dropbear сервера нужно сконвектировать ключи (которые мы генерировали с помощью ssh-keygen) в нужный формат:</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">root@server1# dropbearconvert openssh dropbear ~/.ssh/id_rsa ~/.ssh/id_rsa.db&nbsp;</pre>
+<pre class="prettyprint">&nbsp;</pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+Пишем скрипт поднятия тоннеля и ставим в крон(/etc/scripts/tunel-ssh.sh):</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<pre class="prettyprint">TUNCMD1="ssh -K 300 -y  -i /root/.ssh/id_rsa.db -f -N -R 88:127.0.0.1:77 root@server1"
+PRES=`ps`
+case "$PRES" in
+  *"$TUNCMD1"*)
+    echo 'conection found ';
+    ;;
+  *)
+  # записываем последнюю дату обрыва - для отладки
+  echo `date` &gt; /var/log/connection.log
+  echo 'conection lost' &gt;&gt; /var/log/connection.log
+
+  # убиваем все ssh процессы! Измените если нужно прибивать только определенные.
+  killall ssh
+
+  # перезагружаем, т.к. могут остаться idle процессы
+  killall -HUP proftpd
+
+  $TUNCMD1
+
+  # тунелируем пассивные порты
+  i=60000
+  while [ $i -lt 60010 ]
+  do
+    ssh -K 300 -y  -i /root/.ssh/id_rsa.db -f -N -R $i:127.0.0.1:$i root@server1
+    i=$[$i+1]
+  done
+  ;;
+esac
+</pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+Добавляем в крон задание:</div>
+<pre class="prettyprint">*/5 * * * *  /etc/scripts/tunel-ssh.sh </pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+Если у вас openssh сервер уберите опции "-K 300", "-y". Строка соединения должна выглядеть примерно:</div>
+<pre class="prettyprint">ssh -f -N -R 88:127.0.0.1:77 root@server1
+</pre>
+<div class="separator" style="clear: both; text-align: left;">
+</div>
+<h4 class="separator" style="clear: both; text-align: left;">
+Итог</h4>
+<div class="separator" style="clear: both; text-align: left;">
+В итоге мы должны получить более/менее стабильные тоннели. Заметьте что в итоге получается 11 тоннелей ( 10-для пассивного соединения и 1-управляющий). Также скрипт tunel-ssh.sh проверяет наличие только управляющего соединения, в моем случае этого достаточно, но лучше дописать и проверять состояние 11 соединений.</div>
+</div>
+</div>

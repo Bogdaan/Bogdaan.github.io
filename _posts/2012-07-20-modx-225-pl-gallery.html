@@ -1,0 +1,29 @@
+---
+layout: post
+status: publish
+published: true
+title: Modx 2.2.5-pl снипет Gallery
+
+date: '2012-07-20 13:33:00 +0300'
+
+categories:
+- cms
+tags:
+- modx
+- gallery
+- MODx Gallery not displaying images correctly
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+В релизе 1.5.2 сниппета Gallery может не отображаться картика в бекенде/фронтенде.<br />
+Причина -- ошибка в файле "/core/components/gallery/processors/web/phpthumb.php" -- генераторе тумбов. Код:</p>
+<p>/* auto-prepend base path if not a URL */<br />
+if (strpos($src,'http') === false) {<br />
+&nbsp;&nbsp;&nbsp; $basePath = $modx-&gt;getOption('base_path',null,MODX_BASE_PATH);<br />
+&nbsp;&nbsp;&nbsp; if ($basePath != '/') {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $src = str_replace(basename($basePath),'',$src); //// --- происходит некорректная замена пути к файлу<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $src = ltrim($src,'/');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $src = $basePath.$src;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}</p>
+<p>Например если basepath == 'ss', а картинка находиться в '/assets/images/img.gif' то путь будет искажен в '/aets/images/img.gif'.</p>
+<p>Решение: закоментировать строку &nbsp; $src = str_replace(basename($basePath),'',$src);</p></div>

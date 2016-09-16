@@ -1,0 +1,39 @@
+---
+layout: post
+status: publish
+published: true
+title: MODx и ispmanager
+
+date: '2012-09-06 12:48:00 +0300'
+
+categories:
+- cms
+tags:
+- ispmanager
+- modx
+- modx vs ispmanager
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+MODx&nbsp; как и isp по умолчанию "привязаны" к урлу /manager. Тоесть если попытаться войти в админку сайта по url /manager мы будем попадать в ispmanager.<br />
+Для того чтобы это исправить я написал небольшой скрипт, который перенесет админку MODx evolution на /_manager.</p>
+<p>Собственно скрипт:
+</div>
+<pre class="prettyprint">#!/bin/bash
+
+MODX=$1
+
+find $MODX -name '*.php' | sed -i 's//manager///_manager//' `xargs`
+find $MODX -name '*.php' | sed -i 's/manager//_manager//' `xargs`
+find $MODX -name '*.php' | sed -i 's/"manager//"_manager//' `xargs`
+find $MODX -name '*.php' | sed -i "s/'manager//'_manager//" `xargs`
+find $MODX -name '*.php' | sed -i 's/"manager"/"_manager"/' `xargs`
+find $MODX -name '*.php' | sed -i "s/'manager'/'_manager'/" `xargs`
+mv $MODX/assets/plugins/managermanager $MODX/assets/plugins/manager_manager
+mv $MODX/assets/templates/manager/ $MODX/assets/templates/_manager/
+</pre>
+<p>
+Принимает 1 параметр -- абсолютный путь к сайту на modx, например:</p>
+<pre>one@one# ./movemodx.sh /var/www/site.com
+</pre>
+</div>

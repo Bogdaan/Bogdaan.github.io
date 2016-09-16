@@ -1,0 +1,161 @@
+---
+layout: post
+status: publish
+published: true
+title: Расшифровка xferlog
+
+date: '2012-10-06 17:21:00 +0300'
+
+categories:
+- linux
+tags:
+- proftpd
+- decoding
+- sysadmin
+- xferlog
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Недавно пришлось парсить логи proftpd в формате xferlog.<br />
+Записи в виде:</p>
+<pre>
+Thu Nov  9 01:11:13 2012 1 xxx.xxx.xxx.xxx 10 /ftp/test.txt
+b _ i a rusers@ ftp 0 * c
+</pre>
+<p><a name='more'></a></p>
+<p>Вот собственно расшифровка:</p>
+<p><a href="http://www.wu-ftpd.org/man/xferlog.html"></a> </p>
+<table>
+<tbody>
+<tr>
+<th>Поле</th>
+<th>Ширина</th>
+<th>Значение</th>
+<th>Пример</th>
+</tr>
+<tr>
+<td>current-time</td>
+<td>23</td>
+<td>текущее локальное время&nbsp; в формате “DDD MMM dd hh:mm:ss YYYY”. </p>
+</td>
+<td>Thu Nov  9 01:11:13 2012</td>
+</tr>
+<tr>
+<td>transfer-time</td>
+<td>пер.</td>
+<td>общее время в секундах на операцию.</p>
+</td>
+<td>1</td>
+</tr>
+<tr>
+<td>remote-host</td>
+<td>пер.</td>
+<td>адрес удаленного хоста</p>
+</td>
+<td>xxx.xxx.xxx.xxx</td>
+</tr>
+<tr>
+<td>file-size</td>
+<td>пер.</td>
+<td>размер переданных данных в байтах</p>
+</td>
+<td>10</td>
+</tr>
+<tr>
+<td>file-name</td>
+<td>пер.</td>
+<td>имя переданного файла </p>
+</td>
+<td>/ftp/test.txt</td>
+</tr>
+<tr>
+<td>transfer-type</td>
+<td>1</td>
+<td>буква, обозначающая тип передачи.<br />
+Доступные типы:<br />
+ "a" - ascii передача<br />
+"b" - бинарный режим
+ </td>
+<td>b</td>
+</tr>
+<tr>
+<td>special-action-flag</td>
+<td>пер.</td>
+<td>один или более символов-флагов, обозначающих тип спец. операции.<br />
+ Возможны:<br />
+&nbsp;"С" - файл был архивирован<br />
+&nbsp;"U" - файл был архивированный<br />
+&nbsp;"T" - файл был сжат tar<br />
+&nbsp;"_" - нет спец. операции
+</td>
+<td>_</td>
+</tr>
+<tr>
+<td>direction</td>
+<td>1</td>
+<td>направление передачи.<br />
+Возможны:<br />
+"o" - входящая (выгрузка из сервера) <br />
+"i" - исходящая (загрузка на сервер)
+</td>
+<td>i</td>
+</tr>
+<tr>
+<td>access-mode</td>
+<td>1</td>
+<td>метод по которому залогинился пользователь.<br />
+Возможны:<br />
+"a" - anonymous<br />
+"g" - guest<br />
+"r" - обычный пользователь</p>
+</td>
+<td>a</td>
+</tr>
+<tr>
+<td>username</td>
+<td>пер.</td>
+<td>имя пользователя (локальное), или ID в случае "guest" авторизации</p>
+</td>
+<td>rusers@</td>
+</tr>
+<tr>
+<td>service-name</td>
+<td>3</td>
+<td>название сервиса, обычно - ftp
+</td>
+<td>ftp</td>
+</tr>
+<tr>
+<td>authentication-mode</td>
+<td>1</td>
+<td>метод аутентификации.<br />
+Возможны:<br />
+"0" - нет<br />
+"1" - RFC931</p>
+</td>
+<td>0</td>
+</tr>
+<tr>
+<td>authenticated-user-id</td>
+<td>пер.</td>
+<td>id пользователя, возвращенное методом аутентификации. Символ "*" используется если id не поддерживается / недоступен </p>
+</td>
+<td>*</td>
+</tr>
+<tr>
+<td>completion-status</td>
+<td>1</td>
+<td>символ означающий статус операции(передачи).<br />
+Возможны:<br />
+"с" - завершенная<br />
+"i" - незавершенная</td>
+<td>c</td>
+</tr>
+<tr>
+<td valign="top"></td>
+<td valign="top"></td>
+<td valign="top"></td>
+<td valign="top"></td>
+</tr>
+</tbody>
+</table>
+</div>

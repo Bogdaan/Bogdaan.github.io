@@ -1,0 +1,29 @@
+---
+layout: post
+status: publish
+published: true
+title: Chrome и media queries
+
+date: '2012-11-29 13:02:00 +0200'
+
+categories:
+- bugs
+tags:
+- верстка
+- webkit
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Недавно заметил, что масштабирование в Chrome и Safari не приводот к преминению "CSS media queries". Независимо от того где они расположены ( в @media {} либо отдельном css) - масштабирование не приводит к их применению<br />
+Например, у нас есть адаптивная верстка на несколько разрешений: 719x600, 1024x768, 1890x1000. Для каждого разрешения созданы свои стили. "Визуально" проверить - правильно все сверстано или нет в Chrome не получиться</p>
+<pre class="prettyprint">&lt;link rel="stylesheet" type="text/css" href="/css/layout-mobile.css" media="only screen and (max-width:719px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-mobile-portrait.css" media="only screen and (max-width:479px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-tablet.css" media="only screen and (min-width:720px) and (max-width: 985px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-normolized.css" media="only screen and (min-width:986px) and (max-width: 1180px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-normal.css" media="only screen and (min-width:1181px) and (max-width: 1235px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-wide.css" media="only screen and (min-width:1236px) and (max-width: 1585px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-wide-extra.css" media="only screen and (min-width:1586px) and (max-width: 1890px)" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="/css/layout-hd.css" media="only screen and (min-width:1891px)" /&gt;
+</pre>
+<p>Масштабируем до 200% - в результате видим наложение/перекрытия блоков<br />
+Пример адаптивной верстки: <a href="http://www.iso.org/iso/home.html" rel="nofollow">http://www.iso.org/iso/home.html</a></p>
+<p>Собственно issue создана еще в 2011г.: <a href="http://code.google.com/p/chromium/issues/detail?id=86155" rel="nofollow">http://code.google.com/p/chromium/issues/detail?id=86155</a></div>

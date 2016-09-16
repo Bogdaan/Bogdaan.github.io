@@ -1,0 +1,59 @@
+---
+layout: post
+status: publish
+published: true
+title: Оптимизация картинок для web
+
+date: '2012-11-30 18:18:00 +0200'
+
+categories:
+- frontend
+tags:
+- оптимизация
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+Недавно протетстил несколько своих ресурсов на <a href="https://developers.google.com/speed/pagespeed" rel="nofollow">https://developers.google.com/speed/pagespeed</a>. Удивился, что почти все изображения содержат 40-60% избыточной информации, т.е. маркеры EXIF, IPTC, ICC.<br />
+Получается удалив эту информацию можно ускорить полную загрузку страницы с картинками на 30%(все медиа на одном сервере nginx)</p>
+<h3>
+Утилиты для сжатия и удаления маркеров:</h3>
+<ul>
+<li>ImageMagick: convert, mogrify</li>
+<li>jpegoptim</li>
+<li>pngnq</li>
+</ul>
+<p><a name='more'></a>
+<div>
+<ul>
+</ul>
+<p>На debian все есть в репозиториях:</p>
+<pre class="prettyprint">hcbogdan@station3# apt-get install jpegoptim, pngnq, imagemagick
+</pre>
+<p>Небольшой скрипт для оптимизации картинок (png и jpg):</p>
+<pre class="prettyprint">#!/bin/bash
+DIR=$1
+if [[ -z $DIR ]];
+then
+    exit -1;
+fi;
+
+for file in `find $DIR -type f -name '*.jpg'`
+do
+    jpegoptim -q --strip-all "$file"
+done
+for file in `find $DIR -type f -name '*[^n][^q][^8].png'`
+do
+    newname=${file%'.png'}'-nq8.png'
+    pngnq -f "$file"
+    mv -f $newname $file
+done
+</pre>
+<p>Принимает один параметр - имя директории для поиска картинок. Например:</p>
+<pre class="prettyprint">hcbogdan@station3# chmod a+x image.opt.sh
+hcbogdan@station3# ./image.opt.sh /var/www
+</pre>
+<p>Примечание: в случае png создаеться временный файл "имяфайла"-nq8.png а потом перемещается обратно в источник<br />
+Также можно поставить в cron - и статика всегда будет "чистой".</p>
+<pre class="prettyprint">30 00 * * 0 /usr/bin/image.opt.sh /var/www &gt;/dev/null 2&gt;&amp;1
+</pre>
+<p></div>
+</div>

@@ -1,0 +1,66 @@
+---
+layout: post
+status: publish
+published: true
+title: Сборка фронтенда с помощью grunt, минимальный набор
+
+date: '2015-03-01 16:05:00 +0200'
+
+categories:
+- frontend
+tags:
+- frontend
+- grunt
+- node
+- npm
+- верстка
+---
+<div dir="ltr" style="text-align: left;" trbidi="on">
+На днях встретил очередную "верстку" в формате "куча файлов css + js + html в одной папке". Никакого подхода в именовании, структуре, в общем - бардак. Ну и как обычно, если нужно что-то поменять, нужно менять во всех файлах.</p>
+<p>Казалось бы, вот уже 21-век, а некоторые программисты все еще не пользуются системами автоматической сборки фронтенда. Созданы тысячи инструментов, написаны десятки статей и howto (<a href="http://nano.sapegin.ru/all/bower">про bower</a>, <a href="http://habrahabr.ru/post/251157/">про grunt</a>, про glup и другие), но снова и снова встречаю тоже самое - бардак и нулевая оптимизация frontend части.</p>
+<p>Как правило причины в этом две:</p>
+<ol style="text-align: left;">
+<li>плохое знание англ. языка, или не желание выделить время для оптимизации</li>
+<li>пользователь windows (т.е работу через терминал воспринимают как "мистику")</li>
+</ol>
+<p>
+Привожу свой подход к построению frontend части проекта:</p>
+<p>
+<a name='more'></a><br />
+Если вы еще не использует <a href="http://bower.io/">bower</a> и <a href="http://gruntjs.com/">grunt</a>&nbsp;(или схожие по целям программы), ознакомитесь с документацией на страницах этих проектов, и попробуйте использовать это в своих проектах.</p>
+<p>Что вы получите в итоге?</p>
+<ol style="text-align: left;">
+<li>перестанете писать css "вручную" (можно, но нет смысла), используем less или scss для генерации css</li>
+<li>качественно оформленный фронтенд, который легко поддерживать</li>
+<li>подготовка спрайтов, изображений "для web", обработка векторной графики в автоматическом режиме</li>
+<li>включаемые области в html файлах (повторения)</li>
+<li>перестанете&nbsp;нажимать "f5" после изменений в верстке,&nbsp;livereload в помощь (странно, но некоторые до сих пор так делают :))&nbsp;</li>
+<li>перестанете работать по ftp-ssh, или вручную заливать файлы после изменений&nbsp;</li>
+</ol>
+<p>
+Все что нужно, это выделить немного времени и ознакомиться с документацией, например&nbsp;<a href="http://bower.io/">bower</a>&nbsp;и&nbsp;<a href="http://gruntjs.com/">grunt</a>. Или же на рус.языке можете прочитать данные посты&nbsp;<a href="http://nano.sapegin.ru/all/bower">про bower</a>&nbsp;и&nbsp;<a href="http://habrahabr.ru/post/251157/">про grunt</a>.</p>
+<p>После ознакомления с документацией или статьями, предлагаю присмотреться к следующим пакетам, "must have" в наборе почти любого проекта:</p>
+<ol style="text-align: left;">
+<li>grunt-contrib-watch - отслеживание изменений в файлах</li>
+<li>grunt-contrib-cssmin - операции с css файлами. Сжатие, упаковка, добавление префиксов, замена путей &nbsp;и многое другое.</li>
+<li>grunt-contrib-uglify - упаковка js файлов</li>
+<li>grunt-contrib-concat - конкатенация любых файлов (шаблонов jade, js, css итд.)</li>
+<li>grunt-bower-concat - конкатенация пакетов установленных с помощью bower</li>
+<li>grunt-contrib-less - компилятор less to css</li>
+<li>less-plugin-clean-css - плагин к&nbsp;less&nbsp;компилятору</li>
+<li>less-plugin-autoprefix - плагин к&nbsp;less&nbsp;компилятору, автопрефиксер "-webkit -moz" итд.</li>
+<li>grunt-contrib-jshint - проверка-валидация js кода</li>
+<li>grunt-spritesmith - генератор спрайтов по картинкам</li>
+<li>grunt-contrib-imagemin - сжатие(обработка) изображений для веб</li>
+<li>grunt-css-url-rewrite - замена путей в css</li>
+<li>grunt-contrib-copy - копирование файлов</li>
+<li>grunt-contrib-symlink - создание симлинков</li>
+<li>grunt-contrib-connect - плагин для livereload</li>
+<li>grunt-rsync - оболочка&nbsp;rsync,&nbsp;для заливки файлов на внешний сервер</li>
+<li>grunt-notify - системные уведомления о завершении сборки</li>
+<li>grunt-ssh - выполнение&nbsp;shell&nbsp;команд через ssh на удаленном сервере</li>
+<li>grunt-shell - выполнение shell команд локально</li>
+</ol>
+<div>
+</div>
+</div>
