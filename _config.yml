@@ -19,9 +19,9 @@ email: hcbogdan@gmail.com
 
 description: >
   Коллекция заметок web-программиста, пишем код, исследуем github,
-  погружаемся в unix. ProgrammerLife++
+  погружаемся в unix, life++
 
-baseurl: "/"
+baseurl: ""
 url: "https://hcbogdan.com"
 
 # Build settings
@@ -37,8 +37,11 @@ permalink: pretty
 paginate: 5
 version: 0.0.3
 
-gems: [jekyll-paginate, jekyll-gist]
-
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+  - jekyll-sitemap
+  - jekyll-feed
 
 author:
   name: 'Novikov Bogdan'

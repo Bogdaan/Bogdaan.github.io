@@ -20,15 +20,15 @@ title: Главная - блог Новикова Богдана
 
 <div class="pagination">
   {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">← Старые</a>
+    <a class="pagination-item older" href="{{ site.baseurl }}/page{{paginator.next_page}}">← Старые</a>
   {% else %}
     <span class="pagination-item older">← Старые</span>
   {% endif %}
   {% if paginator.previous_page %}
     {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}">Новые →</a>
+      <a class="pagination-item newer" href="{{ site.baseurl }}/">Новые →</a>
     {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Новые →</a>
+      <a class="pagination-item newer" href="{{ site.baseurl }}/page{{paginator.previous_page}}">Новые →</a>
     {% endif %}
   {% else %}
     <span class="pagination-item newer">Новые →</span>
