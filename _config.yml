@@ -26,7 +26,7 @@ url: "https://hcbogdan.com"
 
 # Build settings
 markdown: kramdown
-highlighter: pygments
+highlighter: rouge
 
 sass:
     sass_dir: _sass
