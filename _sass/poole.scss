@@ -337,8 +337,15 @@ tbody tr:nth-child(odd) th {
 }
 
 .post-limage {
+  display: block;
+  margin: 1rem auto;
+}
+
+@media (min-width: 38em) {
+  .post-limage {
     float: left;
-    margin: 0 1rem;
+    margin: 1rem;
+  }
 }
 
 
